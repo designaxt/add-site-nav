@@ -476,8 +476,10 @@ function addsitenav_plugin_activate() {
  * This action is documented in includes/class-add-site-nav-deactivator.php
  */
 function deactivate_add_site_nav() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-add-site-nav-deactivator.php';
-	Add_Site_Nav_Deactivator::deactivate();
+	// Unregister the post type, so the rules are no longer in memory.
+    unregister_post_type( 'website' );
+    // Clear the permalinks to remove our post type's rules from the database.
+    flush_rewrite_rules();
 }
 
 register_activation_hook( __FILE__, 'activate_add_site_nav' );
